@@ -127,7 +127,11 @@ public class FirstTest {
         );
     }
 
-
+    @Test
+    public void testTextInSearchField()
+    {
+        Assert.assertTrue("string in Search field was not as expected", assertTextInSearchField());
+    }
 
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds)
     {
@@ -170,4 +174,23 @@ public class FirstTest {
         return element;
     }
 
+    private boolean assertTextInSearchField()
+    {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        WebElement search_field = waitForElementPresent(
+                By.id("org.wikipedia:id/search_src_text"),
+                "Cannot find 'Search...' input",
+                5
+        );
+
+        String search_text = search_field.getAttribute("text");
+        String expected_text = "Search…";
+        return search_text.equals(expected_text);
+
+    }
 }
